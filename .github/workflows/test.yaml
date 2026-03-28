@@ -6,33 +6,38 @@ on:
 
 jobs:
   check_compilation_and_coding_style:
-    runs-on: ubuntu-latest
-    container:
-      image: epitechcontent/epitest-docker:latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      runs-on: ubuntu-latest
+      container:
+        image: epitechcontent/epitest-docker:latest
+      
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
 
-      - name: Check Coding Style
-        run: |
-          check.sh $(pwd) $(pwd)
-          if [ -s coding-style-reports.log ]; then
-            echo "Coding style errors found:"
-            cat coding-style-reports.log
-            exit 1
-          else
-            echo "No coding style errors. GG!"
-          fi
+        - name: Check Coding Style
+          run: |
+            # On lance le checker officiel sur le dossier actuel
+            coding-style . .
+            
+            # On vérifie si des erreurs ont été trouvées dans le fichier généré
+            if [ -s coding-style-reports.log ]; then
+              echo "❌ Coding style errors found:"
+              cat coding-style-reports.log
+              exit 1
+            else
+              echo "✅ No coding style errors. GG!"
+            fi
 
-      - name: Build Project
-        timeout-minutes: 2
-        run: |
-          make
-          if [ ! -f ./my_tests ]; then
-            echo "Error: Binary 'my_tests' not found after make."
-            exit 1
-          fi
+        - name: Build Project
+          timeout-minutes: 2
+          run: |
+            make
+            # Vérification de l'existence du binaire pour éviter le "not found"
+            if [ ! -f ./my_tests ]; then
+              echo "❌ Error: Binary 'my_tests' not found. Check your Makefile."
+              ls -R # Aide au debug pour voir ce qui a été généré
+              exit 1
+            fi
 
-      - name: Run Tests
-        run: ./my_tests
+        - name: Run Tests
+          run: ./my_tests
