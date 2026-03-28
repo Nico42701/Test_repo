@@ -11,10 +11,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build and test inside epiclang Docker
+      - name: Run project with epiclang
+        timeout-minutes: 2
         run: |
           docker run --rm \
             -v "${{ github.workspace }}":/src \
             -w /src \
             epitechcontent/epitest-docker:latest \
-            sh -c "make"
+            sh -c "epitest"
