@@ -5,17 +5,34 @@ on:
   pull_request:
 
 jobs:
-  build:
+  check_compilation_and_coding_style:
     runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build & test in Epitech Docker
+      - name: Check Coding Style
+        run: |
+          check.sh $(pwd) $(pwd)
+          if [ -s coding-style-reports.log ]; then
+            echo "Coding style errors found:"
+            cat coding-style-reports.log
+            exit 1
+          else
+            echo "No coding style errors. GG!"
+          fi
+
+      - name: Build Project
         timeout-minutes: 2
         run: |
-          docker run --rm \
-            -v "${{ github.workspace }}":/home/epitech \
-            -w /home/epitech \
-            epitechcontent/epitest-docker:latest \
-            sh -c "make && ./my_tests"
+          make
+          if [ ! -f ./my_tests ]; then
+            echo "Error: Binary 'my_tests' not found after make."
+            exit 1
+          fi
+
+      - name: Run Tests
+        run: ./my_tests
