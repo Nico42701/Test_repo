@@ -3,7 +3,7 @@ SRC = main.c
 OBJ = $(SRC:.c=.o)
 
 all: $(OBJ)
-	gcc $(OBJ)
+	clang $(OBJ)
 
 clean:
 	rm -f $(OBJ)
