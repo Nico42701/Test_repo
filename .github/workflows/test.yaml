@@ -10,16 +10,13 @@ jobs:
     container:
       image: epitechcontent/epitest-docker:latest
 
-    env:
-      CC: epiclang
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Checking coding style
         run: |
-          make
+          make CC=epiclang
           if [ $? -ne 0 ]; then
             echo "::error::Coding style errors detected."
             exit 84
