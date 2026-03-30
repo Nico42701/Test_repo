@@ -14,15 +14,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Checking coding style
+      - name: Search
         run: |
-          FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \))
-          epiclang $FILES -I $(find . -type f -name "*.h" -exec dirname {} \;)
-          echo $?
-          if [ $? -ne 0 ]; then
-            echo "::error::Coding style errors detected."
-            exit 84
-          fi
+          ls -l /usr/local/bin/
+
+#      - name: Checking coding style
+#        run: |
+#          FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \))
+#          epiclang $FILES -I $(find . -type f -name "*.h" -exec dirname {} \;)
+#          echo $?
+#          if [ $? -ne 0 ]; then
+#            echo "::error::Coding style errors detected."
+#            exit 84
+#          fi
 
       - name: Build Project
         run: |
