@@ -16,7 +16,7 @@ jobs:
 
       - name: Search
         run: |
-          ls -l /usr/local/bin/
+          tree /
 
 #      - name: Checking coding style
 #        run: |
