@@ -26,9 +26,12 @@ jobs:
           fi
 
           echo "🔎 Checking coding style..."
-          find . -type f -name "*.c" -exec epiclang {} +
+          echo "🔎 Checking coding style..."
 
-          if [ $? -ne 0 ]; then
+          OUTPUT=$(find . -type f -name "*.c" -exec epiclang {} +)
+
+          if [ -n "$OUTPUT" ]; then
+            echo "$OUTPUT"
             echo "❌ Coding style errors detected."
             exit 1
           fi
