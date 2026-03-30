@@ -19,7 +19,7 @@ jobs:
 
       - name: Run Coding Style Check
         run: |
-          check.sh $(pwd) $(pwd)
+          build.sh $(pwd) $(pwd)
           if [ -s "coding-style-reports.log" ]; then
             echo "::error::Coding style violations found."
             cat coding-style-reports.log
