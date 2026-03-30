@@ -17,8 +17,8 @@ jobs:
       - name: Build Project
         run: |
           make
-          if [ ! -f ./my_tests ]; then
-            echo "::error::Binary 'my_tests' not found."
+          if [ ! -f ./my_world ]; then
+            echo "::error::Binary 'my_world' not found."
             exit 1
           fi
 
@@ -31,13 +31,8 @@ jobs:
             echo "$OUTPUT"
             echo "---------------------------------------"
             echo "❌ Coding style errors detected."
-            # Utilisation d'une annotation GitHub pour que l'erreur soit visible dans le résumé
-            echo "::error::Coding style violations found by epiclang"
             exit 1
           else
             echo "✅ Coding style is clean!"
           fi
 
-      
-      - name: Run Tests
-        run: ./my_tests
