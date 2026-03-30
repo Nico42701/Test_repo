@@ -2,7 +2,7 @@ SRC = $(wildcard SRC/*.c) \
 	$(wildcard LIB/*.c)
 OBJ = $(SRC:.c=.o)
 NAME = my_world
-CC = epiclang
+CC = clang
 CFLAGS = -I includes/
 
 all: $(OBJ)

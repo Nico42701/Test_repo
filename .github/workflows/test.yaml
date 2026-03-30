@@ -10,9 +10,21 @@ jobs:
     container:
       image: epitechcontent/epitest-docker:latest
     
+    env:
+      CC: epiclang
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Run Coding Style Check
+        run: |
+          check.sh $(pwd) $(pwd)
+          if [ -s "coding-style-reports.log" ]; then
+            echo "::error::Coding style violations found."
+            cat coding-style-reports.log
+            exit 1
+          fi
 
       - name: Build Project
         run: |
@@ -20,17 +32,4 @@ jobs:
           if [ ! -f ./my_world ]; then
             echo "::error::Binary 'my_world' not found."
             exit 1
-          fi
-
-      - name: Check Coding Style
-        run: |
-          OUTPUT=$(find . -type f -name "*.c" -exec epiclang {} + 2>&1)
-          
-          if [ -n "$OUTPUT" ]; then
-            echo "$OUTPUT"
-            echo "---------------------------------------"
-            echo "❌ Coding style errors detected."
-            exit 1
-          else
-            echo "✅ Coding style is clean!"
           fi
