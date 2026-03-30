@@ -10,7 +10,8 @@ jobs:
     container:
       image: epitechcontent/epitest-docker:latest
 
-    CC: epiclang
+    env:
+      CC: epiclang
 
     steps:
       - name: Checkout repository
