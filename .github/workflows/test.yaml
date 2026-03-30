@@ -10,17 +10,17 @@ jobs:
     container:
       image: epitechcontent/epitest-docker:latest
 
+    CC: epiclang
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Checking coding style
         run: |
-          FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \))
-          epiclang $FILES -I $(find . -type f -name "*.h" -exec dirname {} \;)
-          echo $?
+          make
           if [ $? -ne 0 ]; then
-            echo "Coding style errors detected."
+            echo "::error::Coding style errors detected."
             exit 84
           fi
 
