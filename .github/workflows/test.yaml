@@ -20,7 +20,7 @@ jobs:
           epiclang $FILES -I $(find . -type f -name "*.h" -exec dirname {} \;)
           if [ $? -ne 0 ]; then
             echo "::error::Coding style errors detected."
-            exit 1
+            exit 84
           fi
 
       - name: Build Project
@@ -28,5 +28,5 @@ jobs:
           make
           if [ ! -f ./my_world ]; then
             echo "::error::Binary 'my_world' not found."
-            exit 1
+            exit 84
           fi
