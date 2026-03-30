@@ -6,27 +6,26 @@ on:
 
 jobs:
   check_compilation_and_coding_style:
-      runs-on: ubuntu-latest
-      container:
-        image: epitechcontent/epitest-docker:latest
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+    
+    env:
+      CC: epiclang
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Project
+        timeout-minutes: 2
+        run: |
+          make
+          if [ ! -f ./my_tests ]; then
+            echo "❌ Error: Binary 'my_tests' not found. Check your Makefile."
+            ls -R # Aide au debug pour voir ce qui a été généré
+            exit 1
+          fi
       
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-
-        - name: Run epiclang
-          run: find . -type f -name "*.c" -exec epiclang {} \;
-
-        - name: Build Project
-          timeout-minutes: 2
-          run: |
-            make
-            # Vérification de l'existence du binaire pour éviter le "not found"
-            if [ ! -f ./my_tests ]; then
-              echo "❌ Error: Binary 'my_tests' not found. Check your Makefile."
-              ls -R # Aide au debug pour voir ce qui a été généré
-              exit 1
-            fi
-        
-        - name: Run Tests
-          run: ./my_tests
+      - name: Run Tests
+        run: ./my_tests
