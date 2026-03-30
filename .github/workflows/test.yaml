@@ -14,6 +14,9 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v4
 
+        - name: Run epiclang
+          run: find . -type f -name "*.c" -exec clang -Werror -Wall -Wextra {} \;
+
         - name: Build Project
           timeout-minutes: 2
           run: |
@@ -24,12 +27,6 @@ jobs:
               ls -R # Aide au debug pour voir ce qui a été généré
               exit 1
             fi
-
-        - name: Run ls
-          run: ls
-        
-        - name: Run epiclang
-          run: epiclang main.c
         
         - name: Run Tests
           run: ./my_tests
