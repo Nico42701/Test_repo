@@ -16,7 +16,8 @@ jobs:
 
       - name: Run Coding Style Check
         run: |
-          find . -type f -name "*.c"
+          find . -type f -name "*.c";
+          find . -type f -name "*.h"
 
       - name: Build Project
         run: |
