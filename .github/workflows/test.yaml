@@ -9,16 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
-    
-    env:
-      CC: epiclang
-    
+        
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Run Coding Style Check
-        run: tree -a
+        run: |
+          find . -type f -name "*.c"
 
       - name: Build Project
         run: |
