@@ -24,7 +24,6 @@ jobs:
 
       - name: Check Coding Style
         run: |
-          # On capture stdout ET stderr
           OUTPUT=$(find . -type f -name "*.c" -exec epiclang {} + 2>&1)
           
           if [ -n "$OUTPUT" ]; then
@@ -35,4 +34,3 @@ jobs:
           else
             echo "✅ Coding style is clean!"
           fi
-
