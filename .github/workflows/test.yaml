@@ -14,13 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build with script
+      - name: Checking coding style
         run: |
-          chmod +x ./build.sh
-          ./build.sh --tag latest -n
-          
+          make CC=epiclang CFLAGS= -Werror -Wextra -Wall
           if [ $? -ne 0 ]; then
-            echo "::error::Build script failed."
+            echo "::error::Coding style errors detected."
             exit 84
           fi
 
