@@ -23,7 +23,8 @@ jobs:
           fi
 
           echo "Checking coding style..."
-          find ./src -name '*.c' -o -name '*.h' | xargs epicheck
+          FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \))
+          epiclang $FILES
           if [ $? -ne 0 ]; then
             echo "::error::Coding style errors detected."
             exit 1
