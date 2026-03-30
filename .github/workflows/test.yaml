@@ -17,7 +17,7 @@ jobs:
         - name: Check Coding Style
           run: |
             # On lance le checker officiel sur le dossier actuel
-            coding-style . .
+            build.sh . .
             
             # On vérifie si des erreurs ont été trouvées dans le fichier généré
             if [ -s coding-style-reports.log ]; then
