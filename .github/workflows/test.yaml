@@ -14,18 +14,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Checking coding style
+        run: |
+          FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \))
+          epiclang $FILES
+          if [ $? -ne 0 ]; then
+            echo "::error::Coding style errors detected."
+            exit 1
+          fi
+
       - name: Build Project
         run: |
           make
           if [ ! -f ./my_world ]; then
             echo "::error::Binary 'my_world' not found."
-            exit 1
-          fi
-
-          echo "Checking coding style..."
-          FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \))
-          epiclang $FILES
-          if [ $? -ne 0 ]; then
-            echo "::error::Coding style errors detected."
             exit 1
           fi
