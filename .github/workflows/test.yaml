@@ -16,7 +16,7 @@ jobs:
 
       - name: Search
         run: |
-          find / -type f -name "build.sh"
+          find / -type f -name "coding-style"
 
 #      - name: Checking coding style
 #        run: |
