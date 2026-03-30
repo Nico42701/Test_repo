@@ -17,7 +17,7 @@ jobs:
       - name: Checking coding style
         run: |
           FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \))
-          epiclang $FILES
+          epiclang $FILES -I $(find . -type f -name "*.h" -exec dirname {} \;)
           if [ $? -ne 0 ]; then
             echo "::error::Coding style errors detected."
             exit 1
