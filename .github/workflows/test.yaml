@@ -16,7 +16,7 @@ jobs:
 
       - name: Search
         run: |
-          tree /
+          find / -type f -name "build.sh"
 
 #      - name: Checking coding style
 #        run: |
