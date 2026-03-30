@@ -14,26 +14,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Project and Check Coding Style
-        timeout-minutes: 2
+      - name: Build Project
+              run: |
+                make
+                if [ ! -f ./my_tests ]; then
+                  echo "::error::Binary 'my_tests' not found."
+                  exit 1
+                fi
+
+      - name: Check Coding Style
         run: |
-          make
-
-          if [ ! -f ./my_tests ]; then
-            echo "❌ Error: Binary 'my_tests' not found. Check your Makefile."
-            ls -R
-            exit 1
-          fi
-
-          echo "🔎 Checking coding style..."
-
-          OUTPUT=$(find . -type f -name "*.c" -exec epiclang {} +)
-
+          # On capture stdout ET stderr
+          OUTPUT=$(find . -type f -name "*.c" -exec epiclang {} + 2>&1)
+          
           if [ -n "$OUTPUT" ]; then
             echo "$OUTPUT"
+            echo "---------------------------------------"
             echo "❌ Coding style errors detected."
+            # Utilisation d'une annotation GitHub pour que l'erreur soit visible dans le résumé
+            echo "::error::Coding style violations found by epiclang"
             exit 1
+          else
+            echo "✅ Coding style is clean!"
           fi
+
       
       - name: Run Tests
         run: ./my_tests
