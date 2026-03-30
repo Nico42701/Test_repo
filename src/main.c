@@ -1,16 +1,8 @@
-/*
-** EPITECH PROJECT, 2025
-** main.c
-** File description:
-** main.c
-*/
-
 #include "crocus.h"
 
 int main(int ac, char **av)
 {
     crocus_t cr = {0};
-
     if (ac == 1)
         return print_error(2);
     if (ac == 2) {
@@ -23,4 +15,10 @@ int main(int ac, char **av)
     print_crocus(cr.number, cr.to_fill);
     free_crocus(&cr);
     return 0;
+
+
+
+
+
+
 }

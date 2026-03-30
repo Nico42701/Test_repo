@@ -15,7 +15,7 @@ SRC := $(SRC_ROOT) $(SRC_SUB)
 
 OBJ	:=	$(SRC:.c=.o)
 
-CFLAGS	:=	-I./include -g -g3 -ggdb -W -Wextra -Werror -Wall
+CFLAGS	:=	-I./include
 
 CC	:=	clang
 
