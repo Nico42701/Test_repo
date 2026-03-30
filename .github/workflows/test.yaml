@@ -25,5 +25,8 @@ jobs:
               exit 1
             fi
 
+        - name: Run ls
+          run: ls
+        
         - name: Run Tests
           run: ./my_tests
