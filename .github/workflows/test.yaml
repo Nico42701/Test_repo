@@ -15,7 +15,7 @@ jobs:
           uses: actions/checkout@v4
 
         - name: Run epiclang
-          run: find . -type f -name "*.c" -exec clang -Werror -Wall -Wextra {} \;
+          run: find . -type f -name "*.c" -exec epiclang {} \;
 
         - name: Build Project
           timeout-minutes: 2
