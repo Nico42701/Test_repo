@@ -18,6 +18,9 @@ jobs:
         run: |
           FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \))
           RESULT=$(epiclang $FILES -I $(find . -type f -name "*.h" -exec dirname {} \;))
+          echo "Test"
+          echo "Test"
+          echo "Test"
           echo "$RESULT"
           if [ $? -ne 0 ]; then
             echo "::error::Coding style errors detected."
