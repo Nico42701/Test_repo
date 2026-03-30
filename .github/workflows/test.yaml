@@ -28,5 +28,8 @@ jobs:
         - name: Run ls
           run: ls
         
+        - name: Run epiclang
+          run: epiclang main.c
+        
         - name: Run Tests
           run: ./my_tests
