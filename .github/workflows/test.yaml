@@ -17,18 +17,10 @@ jobs:
       - name: Checking coding style
         run: |
           make CC=epiclang > epiclang_report.log 2>&1
-          grep '\[Banana\]' epiclang_report.log | grep -v '^epiclang' > filtered.log || true
+          grep -v '^epiclang' > filtered.log || true
 
           if [ -s filtered.log ]; then
-            while IFS= read -r line; do
-              type=$(echo "$line" | grep -oP '\[Minor\]|\[Major\]|\[Info\]|\[Fatal\]' | tr -d '[]')
-              file=$(echo "$line" | cut -d':' -f1)
-              line_number=$(echo "$line" | cut -d':' -f2)
-              code=$(echo "$line" | grep -oP '\(C-[A-Z0-9]+\)' | tr -d '()')
-              message=$(echo "$line" | sed -E 's/.*\] (.*) \(.*/\1/')
-              echo "::error file=$file,line=$line_number::$code - $message"
-            done < filtered.log
-
+            echo filtered.log
             exit 84
           fi
 
