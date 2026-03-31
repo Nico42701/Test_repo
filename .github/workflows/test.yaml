@@ -20,13 +20,13 @@ jobs:
           grep '\[Banana\]' epiclang_report.log | grep -v '^epiclang' > filtered.log || true
           if [ -s filtered.log ]; then
             cat filtered.log
-            echo "::error:Too many Codding Style"
+            echo "::error::Too many Codding Style"
             while IFS= read -r line; do
               file=$(echo "$line" | cut -d':' -f1)
               line_number=$(echo "$line" | cut -d':' -f2)
               type=$(echo "$line" | cut -d' ' -f4 | tr -d '[]')
-              
-              echo "$type coding style error: $file#L$line_number"
+
+              echo "::error::$type coding style error: $file#L$line_number"
             done < filtered.log
             exit 84
           fi
