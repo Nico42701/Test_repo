@@ -20,23 +20,13 @@ jobs:
           grep '\[Banana\]' epiclang_report.log | grep -v '^epiclang' > filtered.log || true
 
           if [ -s filtered.log ]; then
-            echo "### 🍌 Coding Style Report" >> $GITHUB_STEP_SUMMARY
-            echo "| Severity | File | Line | Error Code | Message |" >> $GITHUB_STEP_SUMMARY
-            echo "| --- | --- | --- | --- | --- |" >> $GITHUB_STEP_SUMMARY
-
             while IFS= read -r line; do
-              # Extraction des données
               type=$(echo "$line" | grep -oP '\[Minor\]|\[Major\]|\[Info\]|\[Fatal\]' | tr -d '[]')
               file=$(echo "$line" | cut -d':' -f1)
               line_number=$(echo "$line" | cut -d':' -f2)
               code=$(echo "$line" | grep -oP '\(C-[A-Z0-9]+\)' | tr -d '()')
               message=$(echo "$line" | sed -E 's/.*\] (.*) \(.*/\1/')
-              
-              # 1. On crée l'annotation (limité à 10 visibles dans l'UI GitHub)
               echo "::error file=$file,line=$line_number::$code - $message"
-              
-              # 2. On ajoute au résumé Markdown (ILLIMITÉ et lisible)
-              echo "| $type | $file | $line_number | $code | $message |" >> $GITHUB_STEP_SUMMARY
             done < filtered.log
 
             exit 84
