@@ -44,6 +44,7 @@ jobs:
           if [ ! -x $EXECUTABLES ]; then
             echo "::error::File not found or executable"
             exit 84
+          fi
   
   run_tests:
     needs: check_compilation_and_coding_style
