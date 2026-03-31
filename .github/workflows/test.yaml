@@ -28,7 +28,10 @@ jobs:
       - name: Build Project
         run: |
           make
-          if [ ! -f ./my_world ]; then
-            echo "::error::Binary 'my_world' not found."
+          if [ ! -f ./my_test ]; then
+            echo "::error::Binary 'my_test' not found."
             exit 84
           fi
+
+      - name: Exec Project
+        run: ./my_test

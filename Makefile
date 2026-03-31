@@ -1,6 +1,6 @@
 src = main.c
 obj = $(src:.c=.o)
-name = my
+name = my_test
 CC = clang
 
 all: $(obj)
