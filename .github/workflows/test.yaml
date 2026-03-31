@@ -17,7 +17,7 @@ jobs:
       - name: Checking coding style
         run: |
           make CC=epiclang > epiclang_report.log 2>&1
-          grep '^[^ ]\+:[0-9]\+:[0-9]\+: warning: \[Banana\]' epiclang_report.log > filtered.log || true
+          grep '\[Banana\]' epiclang_report.log | grep -v '^epiclang' > filtered.log || true
 
           if [ -s filtered.log ]; then
             cat epiclang_report.log
@@ -29,7 +29,7 @@ jobs:
               line_number=$(echo "$line" | cut -d':' -f2)
               code=$(echo "$line" | grep -oP '\(C-[A-Z0-9]+\)' | tr -d '()')
               message=$(echo "$line" | sed -E 's/.*\] (.*) \(.*/\1/')
-              annotation_message="$code - $message"
+              annotation_message="$code - $message" >> $GITHUB_STEP_SUMMARY
 
               echo "::error file=$file,line=$line_number::$annotation_message"
             done < filtered.log
