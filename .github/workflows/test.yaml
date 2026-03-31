@@ -20,6 +20,7 @@ jobs:
           grep -v '^epiclang' epiclang_report.log > filtered.log || true
 
           if [ -s filtered.log ]; then
+            ./parser < filtered.log
             cat filtered.log
             echo "::error::Coding style errors detected."
             exit 84
