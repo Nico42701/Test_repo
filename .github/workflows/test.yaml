@@ -17,8 +17,8 @@ jobs:
       - name: Checking coding style
         run: |
           make CC=epiclang > epiclang_report.log 2>&1
-          grep -v '^epiclang' > filtered.log || true
-
+          grep '\[Banana\]' epiclang_report.log | grep -v '^epiclang' > filtered.log || true
+          cat filtered.log
           if [ -s filtered.log ]; then
             echo filtered.log
             exit 84
