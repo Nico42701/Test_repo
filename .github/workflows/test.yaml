@@ -17,8 +17,10 @@ jobs:
       - name: Checking coding style
         run: |
           make CC=epiclang > epiclang_report.log 2>&1
-          if [ -s epiclang_report.log ]; then
-            cat epiclang_report.log
+          grep -v '^epiclang' epiclang_report.log > filtered.log
+
+          if [ -s filtered.log ]; then
+            cat filtered.log
             echo "::error::Coding style errors detected."
             exit 84
           fi
