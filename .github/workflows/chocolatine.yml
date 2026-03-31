@@ -10,10 +10,10 @@ on:
 
 env:
   MIRROR_SSH_URL: "git@github.com:EpitechRepo/mirror.git"
-  EXECUTABLES: "my_test2"
+  EXECUTABLES: "my_test"
 
 jobs:
-  check_coding_style:
+  check_compilation_and_coding_style:
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -23,37 +23,48 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Compile project with epiclang
+        run: make CC=epiclang > epiclang_report.log 2>&1
+        timeout-minutes: 2
+
       - name: Checking coding style
         run: |
-          make CC=epiclang > epiclang_report.log 2>&1
           grep '\[Banana\]' epiclang_report.log | grep -v '^epiclang' > filtered.log || true
           if [ -s filtered.log ]; then
             cat filtered.log
             echo "::error::Too many Codding Style"
             exit 84
           fi
+
+      - name: Clean file
+        run: make clean
+
+      - name: Verify Executables
+        run: |
+          if [ ! -x $EXECUTABLES ]; then
+            echo "::error::File not found or executable"
+            exit 84
   
-  check_program_compilation:
-    needs: check_coding_style
+  run_tests:
+    needs: check_compilation_and_coding_style
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
+
+    if: github.repository != 'EpitechRepo/mirror'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Project
-        run: make
+      - name: run_tests
+        run: make tests_run
         timeout-minutes: 2
-
-      - name: Clean Project
-        run: make clean
-
-      - name: Executables
-        run: ./$EXECUTABLES
-
+      
+      - name: run fclean
+        run: make fclean
+  
   push_to_mirror:
-    needs: check_program_compilation
+    needs: run_tests
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
