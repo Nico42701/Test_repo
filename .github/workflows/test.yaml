@@ -25,7 +25,7 @@ jobs:
               file=$(echo "$line" | cut -d':' -f1)
               line_number=$(echo "$line" | cut -d':' -f2)
               type=$(echo "$line" | cut -d' ' -f4 | tr -d '[]')
-              code=$(echo "$line" | grep "C-")
+              code=$(echo "$line" | grep "C-" | tr -d '(C-)')
 
               echo "::error::$type coding style error: $file#L$line_number::$code"
             done < filtered.log
