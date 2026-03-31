@@ -1,0 +1,66 @@
+name: chocolatine
+
+on:
+  push:
+    branches-ignore:
+      - 'no-ga/**'
+  pull_request:
+    branches-ignore:
+      - 'no-ga/**'
+
+env:
+  MIRROR_SSH_URL: "git@github.com:EpitechRepo/mirror.git"
+  EXECUTABLES: "my_test"
+
+jobs:
+  check_coding_style:
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+
+    if: github.repository != 'EpitechRepo/mirror' 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checking coding style
+        run: |
+          make CC=epiclang > epiclang_report.log 2>&1
+          grep '\[Banana\]' epiclang_report.log | grep -v '^epiclang' > filtered.log || true
+          if [ -s filtered.log ]; then
+            cat filtered.log
+            echo "::error::Too many Codding Style"
+            exit 84
+          fi
+  
+  check_program_compilation:
+    needs: check_coding_style
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Project
+        run: make
+        timeout-minutes: 2
+
+      - name: Clean Project
+        run: make clean
+
+      - name: Executables
+        run: ./$EXECUTABLES
+
+  push_to_mirror:
+    needs: check_program_compilation
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to Mirror
+        run: echo "OK!"
