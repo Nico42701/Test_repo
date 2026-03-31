@@ -23,19 +23,16 @@ jobs:
             echo "Found coding style warnings, generating GitHub annotations..."
 
             while IFS= read -r line; do
+              type=$(echo "$line" | grep -oP '\[Minor\]|\[Major\]|\[Info\]|\[Fatal\]' | tr -d '[]')
               file=$(echo "$line" | cut -d':' -f1)
               line_number=$(echo "$line" | cut -d':' -f2)
-              type=$(echo "$line" | grep -oP '\[Minor\]|\[Major\]|\[Info\]' | tr -d '[]')
               code=$(echo "$line" | grep -oP '\(C-[A-Z0-9]+\)' | tr -d '()')
               message=$(echo "$line" | sed -E 's/.*\] (.*) \(.*/\1/')
 
-              if [ "$type" = "Major" ]; then
-                echo "::error file=$file,line=$line_number,title=$code::$message"
-              elif [ "$type" = "Minor" ]; then
-                echo "::warning file=$file,line=$line_number,title=$code::$message"
-              else
-                echo "::notice file=$file,line=$line_number,title=$code::$message"
-              fi
+              annotation_message="$type coding style error: $file#L$line_number
+                $code - $message"
+
+              echo "::error file=$file,line=$line_number::$annotation_message"
             done < filtered.log
 
             exit 84
