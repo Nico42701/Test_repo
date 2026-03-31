@@ -10,7 +10,7 @@ on:
 
 env:
   MIRROR_SSH_URL: "git@github.com:EpitechRepo/mirror.git"
-  EXECUTABLES: "my_test"
+  EXECUTABLES: "my_test2"
 
 jobs:
   check_coding_style:
