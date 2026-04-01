@@ -12,7 +12,7 @@ clean:
 fclean: clean
 	rm -f $(name)
 
-tests_run:
-	./$(name)
-
 re: fclean all
+
+tests_run: re
+	./$(name)
