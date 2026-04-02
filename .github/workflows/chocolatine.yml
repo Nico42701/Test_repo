@@ -10,7 +10,6 @@ on:
 
 env:
   MIRROR_SSH_URL: "EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16"
-  MIRROR_URL: "git@github.com:EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16.git"
   EXECUTABLES: "my_test"
 
 jobs:
@@ -86,6 +85,6 @@ jobs:
         if: ${{ github.repository != env.MIRROR_SSH_URL }}
         uses: pixta-dev/repository-mirroring-action@v1
         with:
-          target_repo_url: ${{ env.MIRROR_URL }}
+          target_repo_url: ${{ env.MIRROR_SSH_URL }}
           ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
           ssh_username: ${{ secrets.GIT_SSH_PRIVATE_KEY_ID }}
