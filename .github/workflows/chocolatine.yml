@@ -49,7 +49,7 @@ jobs:
             echo "::error::File not found or executable"
             exit 84
           fi
-  
+
   run_tests:
     needs: check_compilation_and_coding_style
     runs-on: ubuntu-latest
@@ -69,7 +69,7 @@ jobs:
       - name: run fclean
         if: ${{ github.repository != env.MIRROR_SSH_URL }}
         run: make fclean
-  
+
   push_to_mirror:
     needs: run_tests
     runs-on: ubuntu-latest
