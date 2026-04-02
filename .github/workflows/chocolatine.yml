@@ -1,3 +1,6 @@
+# Le dépôt Epitech est EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16
+# Le dépôt Check est git@github.com:EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16.git
+
 name: chocolatine
 
 on:
@@ -10,10 +13,12 @@ on:
 
 env:
   MIRROR_SSH_URL: "git@github.com:EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16.git"
+  MIRROR_REPO_NAME: "EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16"
   EXECUTABLES: "my_test"
 
 jobs:
   check_compilation_and_coding_style:
+    if: github.repository != env.MIRROR_REPO_NAME
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -25,16 +30,13 @@ jobs:
           echo "Le dépôt destinataire est ${{ env.MIRROR_SSH_URL }}"
 
       - name: Checkout repository
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         uses: actions/checkout@v4
 
       - name: Compile project with epiclang
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         run: make CC=epiclang > epiclang_report.log 2>&1
         timeout-minutes: 2
 
       - name: Checking coding style
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         run: |
           grep '\[Banana\]' epiclang_report.log | grep -v '^epiclang' > filtered.log || true
           if [ -s filtered.log ]; then
@@ -44,11 +46,9 @@ jobs:
           fi
 
       - name: Clean file
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         run: make clean
 
       - name: Verify Executables
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         run: |
           if [ ! -x $EXECUTABLES ]; then
             echo "::error::File not found or executable"
@@ -56,6 +56,7 @@ jobs:
           fi
 
   run_tests:
+    if: github.repository != env.MIRROR_REPO_NAME
     needs: check_compilation_and_coding_style
     runs-on: ubuntu-latest
     container:
@@ -63,30 +64,26 @@ jobs:
 
     steps:
       - name: Checkout repository
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         uses: actions/checkout@v4
 
       - name: run_tests
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         run: make tests_run
         timeout-minutes: 2
       
       - name: run fclean
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         run: make fclean
 
   push_to_mirror:
+    if: github.repository != env.MIRROR_REPO_NAME
     needs: run_tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Push to Mirror
-        if: ${{ github.repository != env.MIRROR_SSH_URL }}
         uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url: ${{ env.MIRROR_SSH_URL }}
