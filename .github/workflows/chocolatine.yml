@@ -22,12 +22,6 @@ jobs:
       image: epitechcontent/epitest-docker:latest
 
     steps:
-      - name: tests
-        run: |
-          echo "git@github.com:${{ github.repository }}.git"
-          echo "${{ env.MIRROR_SSH_URL }}"
-
-
       - name: Check Repository Identity
         run: |
           if [ "git@github.com:${{ github.repository }}.git" = "${{ env.MIRROR_SSH_URL }}" ]; then
