@@ -18,7 +18,7 @@ jobs:
     container:
       image: epitechcontent/epitest-docker:latest
 
-    if: github.repository != env.MIRROR_SSH_URL
+    if: github.repository != ${{ env.MIRROR_SSH_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
     container:
       image: epitechcontent/epitest-docker:latest
 
-    if: github.repository != env.MIRROR_SSH_URL
+    if: github.repository != ${{ env.MIRROR_SSH_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -66,7 +66,7 @@ jobs:
   
   push_to_mirror:
     needs: run_tests
-    if: github.event_name == 'push' && github.repository != env.MIRROR_SSH_URL
+    if: github.event_name == 'push' && github.repository != ${{ env.MIRROR_SSH_URL }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
