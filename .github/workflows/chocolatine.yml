@@ -19,6 +19,9 @@ jobs:
       image: epitechcontent/epitest-docker:latest
 
     steps:
+      - name: Display repository name
+        run: echo "Le dépôt actuel est ${{ github.repository }}"
+
       - name: Checkout repository
         if: ${{ github.repository != env.MIRROR_SSH_URL }}
         uses: actions/checkout@v4
