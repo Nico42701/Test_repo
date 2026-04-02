@@ -13,7 +13,6 @@ on:
 
 env:
   MIRROR_SSH_URL: "git@github.com:EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16.git"
-  MIRROR_REPO_NAME: "EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16"
   EXECUTABLES: "my_test"
 
 jobs:
@@ -23,13 +22,18 @@ jobs:
       image: epitechcontent/epitest-docker:latest
 
     steps:
+      - name: tests
+        run: |
+          echo "git@github.com:${{ github.repository }}.git"
+          echo "${{ env.MIRROR_SSH_URL }}"
+
+
       - name: Check Repository Identity
         run: |
-          if [ "${{ github.repository }}" = "${{ env.MIRROR_REPO_NAME }}" ]; then
+          if [ "git@github.com:${{ github.repository }}.git" = "${{ env.MIRROR_SSH_URL }}" ]; then
             echo "::error::Ce workflow ne doit pas s'exécuter sur le dépôt miroir."
             exit 1
           fi
-          echo "Dépôt validé : ${{ github.repository }}"
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -70,7 +74,7 @@ jobs:
       - name: run_tests
         run: make tests_run
         timeout-minutes: 2
-      
+
       - name: run fclean
         run: make fclean
 
