@@ -9,7 +9,7 @@ on:
       - 'no-ga/**'
 
 env:
-  MIRROR_SSH_URL: "git@github.com:EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16.git"
+  MIRROR_SSH_URL: "EpitechPGE1-2025/G-DOP-200-RUN-2-1-chocolatine-16.git"
   EXECUTABLES: "my_test"
 
 jobs:
