@@ -20,7 +20,9 @@ jobs:
 
     steps:
       - name: Display repository name
-        run: echo "Le dépôt actuel est ${{ github.repository }}"
+        run: |
+          echo "Le dépôt actuel est ${{ github.repository }}"
+          echo "Le dépôt destinataire est ${{ env.MIRROR_SSH_URL }}"
 
       - name: Checkout repository
         if: ${{ github.repository != env.MIRROR_SSH_URL }}
