@@ -25,10 +25,11 @@ jobs:
     steps:
       - name: Check Repository Identity
         run: |
-          if [ "${{ github.repository }}" == "${{ env.MIRROR_REPO_NAME }}" ]; then
-            echo "Erreur : Ce workflow ne doit pas s'exécuter sur le dépôt miroir."
+          if [ "${{ github.repository }}" = "${{ env.MIRROR_REPO_NAME }}" ]; then
+            echo "::error::Ce workflow ne doit pas s'exécuter sur le dépôt miroir."
             exit 1
           fi
+          echo "Dépôt validé : ${{ github.repository }}"
 
       - name: Checkout repository
         uses: actions/checkout@v4
